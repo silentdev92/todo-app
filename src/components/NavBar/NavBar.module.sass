@@ -1,0 +1,57 @@
+.root
+    height: 86px
+    display: flex
+    justify-content: space-between
+    align-items: center
+    color: #fff
+    position: relative
+    .logo
+        display: flex
+        align-items: center
+        .icon
+            font-size: 40px
+            margin-right: 10px
+        .text
+            font-family: 'Rowdies', cursive
+            font-weight: 400
+            font-size: 36px
+    .user
+        cursor: pointer
+        .name
+            font-family: 'Roboto'
+            font-style: normal
+            font-weight: 400
+            font-size: 24px
+    .dropdown
+        background: #fff
+        border: 1px solid #D7D7D7
+        border-radius: 16px
+        width: 240px
+        position: absolute
+        right: 0
+        top: 94px
+        ul.list
+            padding: 12px 16px
+            list-style: none
+            li.item
+                color: #040404
+                cursor: pointer
+                transition: color 0.3s linear
+                &:not(:last-child)
+                    margin-bottom: 12px
+                &:hover
+                    color: #FF4F5A
+                .icon
+                    font-size: 22px
+                    margin-right: 10px
+                .text
+                    font-size: 18px
+                    font-family: 'Roboto'
+                    font-style: normal
+                    font-weight: 400
+            li.item.active
+                color: #FF4F5A
+        .divider
+            height: 1px
+            width: 100%
+            background-color: #D7D7D7
