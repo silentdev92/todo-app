@@ -1,14 +1,14 @@
 import React, { FC } from 'react'
 import { Outlet } from 'react-router-dom'
-import { NavBar } from '../../components/NavBar'
+import { Navbar } from '../../components/Navbar'
 import styles from './MainLayout.module.sass'
 
 const MainLayout: FC = () => {
   return (
     <div className={styles.root}>
-      <div className={styles.navBar}>
+      <div className={styles.navbar}>
         <div className={styles.container}>
-          <NavBar />
+          <Navbar />
         </div>
       </div>
       <div className={styles.container}>

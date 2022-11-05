@@ -7,11 +7,11 @@ import {
 } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import classNames from 'classnames/bind'
-import styles from './NavBar.module.sass'
+import styles from './Navbar.module.sass'
 
 const cx = classNames.bind(styles)
 
-const NavBar: FC = () => {
+const Navbar: FC = () => {
   const [dropdownIsOpen, setDropdownIsOpen] = useState<boolean>(false)
 
   return (
@@ -59,4 +59,4 @@ const NavBar: FC = () => {
   )
 }
 
-export default NavBar
+export default Navbar
