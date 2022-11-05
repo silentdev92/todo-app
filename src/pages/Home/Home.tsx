@@ -4,6 +4,7 @@ import { faCalendar, faCalendarDays } from '@fortawesome/free-solid-svg-icons'
 import { SidebarItem } from '../../components/SidebarItem'
 import styles from './Home.module.sass'
 import { TodoItem } from '../../components/TodoItem'
+import { TodoForm } from '../../components/TodoForm'
 
 const Home: FC = () => {
   return (
@@ -25,6 +26,7 @@ const Home: FC = () => {
       </div>
       <div className={styles.main}>
         <TodoItem />
+        <TodoForm />
       </div>
     </div>
   )
