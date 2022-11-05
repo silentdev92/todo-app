@@ -1,0 +1,89 @@
+.root
+    display: flex
+    .checkbox
+        padding-top: 10px
+        margin-right: 12px
+        input[type="checkbox"]
+            appearance: none
+            -webkit-appearance: none
+            width: 25px
+            height: 25px
+            background: #EAEAEA
+            border-radius: 50px
+            position: relative
+            cursor: pointer
+            transition: background-color 0.3s linear
+            &:hover
+                background-color: #d4d3d3
+            &::after
+                content: ''
+                position: absolute
+                width: 12px
+                height: 20px
+                border-right: 3px solid #FF4F5A
+                border-bottom: 3px solid #FF4F5A
+                transform: rotate(45deg)
+                position: absolute
+                bottom: 5px
+                right: 2px
+                display: none
+            &:checked
+                &::after
+                    display: block
+    .card
+        width: 100%
+        display: flex
+        justify-content: space-between
+        border: 1px solid #E3E3E3
+        border-radius: 8px
+        position: relative
+        .left
+            font-family: 'Roboto'
+            font-weight: 400
+            padding: 8px 20px 20px
+            .title
+                display: block
+                font-size: 24px
+                color: #000
+                margin-bottom: 8px
+            .description
+                display: block
+                font-size: 22px
+                color: #787878
+        .right
+            display: flex
+            padding: 16px 30px
+            .icon
+                font-size: 24px
+                color: #8E8E8E
+                cursor: pointer
+                transition: color 0.3s linear
+                &:hover
+                    color: #FF4F5A
+                &:not(:last-child)
+                    margin-right: 28px
+        .dropdown
+            width: 176px
+            height: 59px
+            display: flex
+            align-items: center
+            background: #FFF
+            border: 1px solid #DADADA
+            box-shadow: 2px 2px 12px 2px rgba(0, 0, 0, 0.19)
+            border-radius: 6px
+            padding-left: 16px
+            color: #FF4F5A
+            position: absolute
+            top: 48px
+            right: 32px
+            .item
+                display: flex
+                align-items: center
+                cursor: pointer
+                .icon
+                    font-size: 15px
+                    margin-right: 9px
+                .text
+                    font-family: 'Roboto'
+                    font-weight: 400
+                    font-size: 18px

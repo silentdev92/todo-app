@@ -3,6 +3,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faCalendar, faCalendarDays } from '@fortawesome/free-solid-svg-icons'
 import { SidebarItem } from '../../components/SidebarItem'
 import styles from './Home.module.sass'
+import { TodoItem } from '../../components/TodoItem'
 
 const Home: FC = () => {
   return (
@@ -22,7 +23,9 @@ const Home: FC = () => {
           active={true}
         />
       </div>
-      <div className={styles.main}></div>
+      <div className={styles.main}>
+        <TodoItem />
+      </div>
     </div>
   )
 }
