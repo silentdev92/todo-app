@@ -4,6 +4,14 @@ import { faTableList } from '@fortawesome/free-solid-svg-icons'
 import { Link } from 'react-router-dom'
 import styles from '../auth.module.sass'
 
+export interface SignUpFormInput {
+  email: string
+  firstName: string
+  lastName: string
+  password: string
+  passwordConfirm: string
+}
+
 const SignUp: FC = () => {
   return (
     <div className={styles.root}>
