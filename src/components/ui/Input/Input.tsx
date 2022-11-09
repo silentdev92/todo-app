@@ -7,7 +7,8 @@ import styles from './Input.module.sass'
 interface InputProps {
   label: string
   name: Path<SignUpFormInput | SignInFormInput>
-  register: UseFormRegister<SignUpFormInput | SignInFormInput>
+  register: any
+  // register: UseFormRegister<SignUpFormInput | SignInFormInput>
   error?: string
 }
 

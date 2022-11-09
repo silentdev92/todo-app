@@ -30,7 +30,7 @@ const authRoutes = [
 ]
 
 const AppRouter: FC = () => {
-  const isAuth = true
+  const isAuth = false
 
   return (
     <Routes>

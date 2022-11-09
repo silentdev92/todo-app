@@ -2,7 +2,11 @@ import React, { FC } from 'react'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faTableList } from '@fortawesome/free-solid-svg-icons'
 import { Link } from 'react-router-dom'
+import * as yup from 'yup'
 import styles from '../auth.module.sass'
+import { useForm, SubmitHandler } from 'react-hook-form'
+import { yupResolver } from '@hookform/resolvers/yup'
+import { Input } from '../../../components/ui/Input'
 
 export interface SignUpFormInput {
   email: string
@@ -12,7 +16,48 @@ export interface SignUpFormInput {
   passwordConfirm: string
 }
 
+const schema = yup.object().shape({
+  email: yup
+    .string()
+    .required('Email address is required')
+    .email('Invalid Email address'),
+  firstName: yup
+    .string()
+    .required('First name is required')
+    .min(2, 'First name length should be at least 2 characters')
+    .max(15, 'First name cannot exceed more than 15 characters'),
+  lastName: yup
+    .string()
+    .required('Last name is required')
+    .min(2, 'Last name length should be at least 2 characters')
+    .max(15, 'Last name cannot exceed more than 15 characters'),
+  password: yup
+    .string()
+    .required('Password is required')
+    .min(8, 'Password length should be at least 8 characters')
+    .max(20, 'Password cannot exceed more than 20 characters'),
+  passwordConfirm: yup
+    .string()
+    .required('Confirm password is required')
+    .min(8, 'Password length should be at least 8 characters')
+    .max(20, 'Password cannot exceed more than 20 characters')
+    .oneOf([yup.ref('password')], 'Passwords do not match'),
+})
+
 const SignUp: FC = () => {
+  const {
+    register,
+    handleSubmit,
+    formState: { errors, isValid },
+  } = useForm<SignUpFormInput>({
+    mode: 'onBlur',
+    resolver: yupResolver(schema),
+  })
+
+  const onSubmit: SubmitHandler<SignUpFormInput> = (data) => {
+    console.log(data)
+  }
+
   return (
     <div className={styles.root}>
       <div className={styles.card}>
@@ -23,33 +68,47 @@ const SignUp: FC = () => {
           <span className={styles.text}>Todo App</span>
         </div>
         <div className={styles.title}>Sign up</div>
-        <form>
-          <div className={styles['text-field']}>
-            <label htmlFor="email">Email</label>
-            <input type="email" id="email" placeholder="your@email.com" />
-            <span className={styles.error}>Invalid email</span>
-          </div>
-          <div className={styles['text-field']}>
-            <label htmlFor="username">Username</label>
-            <input type="password" id="username" placeholder="your username" />
-          </div>
-          <div className={styles['text-field']}>
-            <label htmlFor="password">Password</label>
-            <input type="password" id="password" placeholder="your password" />
-          </div>
-          <div className={styles['text-field']}>
-            <label htmlFor="password2">Confirm password</label>
-            <input type="email" id="password2" placeholder="your password" />
-          </div>
+        <form onSubmit={handleSubmit(onSubmit)}>
+          <Input
+            label="First name"
+            name="firstName"
+            register={register}
+            error={errors.firstName?.message}
+          />
+          <Input
+            label="Last name"
+            name="lastName"
+            register={register}
+            error={errors.lastName?.message}
+          />
+          <Input
+            label="Email address"
+            name="email"
+            register={register}
+            error={errors.email?.message}
+          />
+          <Input
+            label="Password"
+            name="password"
+            register={register}
+            error={errors.password?.message}
+          />
+          <Input
+            label="Confirm password"
+            name="passwordConfirm"
+            register={register}
+            error={errors.passwordConfirm?.message}
+          />
+
           <div className={styles.button}>
-            <button type="submit" disabled>
+            <button type="submit" disabled={!isValid}>
               Sign up
             </button>
           </div>
         </form>
         <div className={styles.footer}>
           <div className={styles.divider}></div>
-          <span className={styles.text}>Not have account?</span>
+          <span className={styles.text}>Already have an account?</span>
           &nbsp;
           <span className={styles.link}>
             <Link to="/signin">Sign in</Link>
