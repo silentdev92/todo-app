@@ -7,6 +7,7 @@ import styles from '../auth.module.sass'
 import { useForm, SubmitHandler } from 'react-hook-form'
 import { yupResolver } from '@hookform/resolvers/yup'
 import { Input } from '../../../components/ui/Input'
+import AuthService from '../../../api/AuthService'
 
 export interface SignUpFormInput {
   email: string
@@ -54,8 +55,15 @@ const SignUp: FC = () => {
     resolver: yupResolver(schema),
   })
 
-  const onSubmit: SubmitHandler<SignUpFormInput> = (data) => {
-    console.log(data)
+  const onSubmit: SubmitHandler<SignUpFormInput> = async ({
+    email,
+    password,
+    firstName,
+    lastName,
+  }) => {
+    ///console.log(data)
+    const user = await AuthService.getUser()
+    console.log(user)
   }
 
   return (
