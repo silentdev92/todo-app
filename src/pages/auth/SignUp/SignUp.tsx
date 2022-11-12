@@ -1,13 +1,15 @@
-import React, { FC } from 'react'
+import React, { FC, useState } from 'react'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faTableList } from '@fortawesome/free-solid-svg-icons'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import * as yup from 'yup'
 import styles from '../auth.module.sass'
 import { useForm, SubmitHandler } from 'react-hook-form'
 import { yupResolver } from '@hookform/resolvers/yup'
 import { Input } from '../../../components/ui/Input'
 import AuthService from '../../../api/AuthService'
+import { useAppDispatch } from '../../../hooks/useAppDispatch'
+import { signIn } from '../../../store/auth/slice'
 
 export interface SignUpFormInput {
   email: string
@@ -46,6 +48,10 @@ const schema = yup.object().shape({
 })
 
 const SignUp: FC = () => {
+  const [signUpError, setSignUpError] = useState<string | null>(null)
+  const dispatch = useAppDispatch()
+  const navigate = useNavigate()
+
   const {
     register,
     handleSubmit,
@@ -61,9 +67,19 @@ const SignUp: FC = () => {
     firstName,
     lastName,
   }) => {
-    ///console.log(data)
-    const user = await AuthService.getUser()
-    console.log(user)
+    try {
+      const { data, error } = await AuthService.signUp(
+        email,
+        password,
+        firstName,
+        lastName
+      )
+      if (error) throw error
+      dispatch(signIn(data.user))
+      navigate('/home')
+    } catch (error: any) {
+      setSignUpError(error.message)
+    }
   }
 
   return (
@@ -112,6 +128,7 @@ const SignUp: FC = () => {
             <button type="submit" disabled={!isValid}>
               Sign up
             </button>
+            {signUpError && <span className={styles.error}>{signUpError}</span>}
           </div>
         </form>
         <div className={styles.footer}>

@@ -1,11 +1,13 @@
 import React, { FC } from 'react'
 import { Route, Routes } from 'react-router-dom'
+import { useAppSelector } from '../hooks/useAppSelector'
 import { EmptyLayout } from '../layouts/EmptyLayout'
 import { MainLayout } from '../layouts/MainLayout'
 import { SignIn } from '../pages/auth/SignIn'
 import { SignUp } from '../pages/auth/SignUp'
 import { Home } from '../pages/Home'
 import { Profile } from '../pages/Profile'
+import { selectIsSignedIn } from '../store/auth/selectors'
 
 const publicRoutes = [
   {
@@ -30,11 +32,11 @@ const authRoutes = [
 ]
 
 const AppRouter: FC = () => {
-  const isAuth = false
+  const isSignedIn = useAppSelector(selectIsSignedIn)
 
   return (
     <Routes>
-      {!isAuth ? (
+      {!isSignedIn ? (
         <Route path="/" element={<EmptyLayout />}>
           {publicRoutes.map((route, idx) => (
             <Route {...route} key={idx} />

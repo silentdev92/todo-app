@@ -8,11 +8,26 @@ import {
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import classNames from 'classnames/bind'
 import styles from './Navbar.module.sass'
+import AuthService from '../../api/AuthService'
+import { useAppDispatch } from '../../hooks/useAppDispatch'
+import { useNavigate } from 'react-router-dom'
+import { signOut } from '../../store/auth/slice'
 
 const cx = classNames.bind(styles)
 
 const Navbar: FC = () => {
   const [dropdownIsOpen, setDropdownIsOpen] = useState<boolean>(false)
+  const dispatch = useAppDispatch()
+  const navigate = useNavigate()
+
+  const signOutHandler = async () => {
+    try {
+      const { error } = await AuthService.signOut()
+      if (error) throw error
+      dispatch(signOut())
+      navigate('/signin')
+    } catch (error: any) {}
+  }
 
   return (
     <div className={styles.root}>
@@ -46,11 +61,11 @@ const Navbar: FC = () => {
           </ul>
           <div className={styles.divider}></div>
           <ul className={styles.list}>
-            <li className={cx('item', 'active')}>
+            <li className={cx('item', 'active')} onClick={signOutHandler}>
               <span className={styles.icon}>
                 <FontAwesomeIcon icon={faRightFromBracket} />
               </span>
-              <span className={styles.text}>Logout</span>
+              <span className={styles.text}>Sign out</span>
             </li>
           </ul>
         </div>

@@ -28,6 +28,7 @@
             margin-bottom: 38px
         .button
             margin-bottom: 110px
+            position: relative
             button
                 width: 100%
                 background-color: #FF4F5A
@@ -42,11 +43,15 @@
                 transition: background-color 0.3s linear
                 &:hover
                     background-color: #e5333f
-                &:focus
-                    background-color: #c02933
                 &:disabled
                     cursor: default
                     background-color: #ccc
+            .error
+                position: absolute
+                left: 10px
+                bottom: -20px
+                color: red
+                font-size: 14px
         .footer
             font-family: 'Roboto'
             font-style: normal
