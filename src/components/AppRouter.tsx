@@ -6,6 +6,7 @@ import { MainLayout } from '../layouts/MainLayout'
 import { SignIn } from '../pages/auth/SignIn'
 import { SignUp } from '../pages/auth/SignUp'
 import { Home } from '../pages/Home'
+import NotFound from '../pages/NotFound'
 import { Profile } from '../pages/Profile'
 import { selectIsSignedIn } from '../store/auth/selectors'
 
@@ -49,6 +50,7 @@ const AppRouter: FC = () => {
           ))}
         </Route>
       )}
+      <Route path="*" element={<NotFound />} />
     </Routes>
   )
 }
