@@ -1,22 +1,25 @@
-import React, { ChangeEvent, FC } from 'react'
-import { Path, UseFormRegister } from 'react-hook-form'
-import { SignUpFormInput } from '../../../pages/auth/SignUp/SignUp'
-import { SignInFormInput } from '../../../pages/auth/SignIn/SignIn'
+import React, { FC } from 'react'
 import styles from './Input.module.sass'
 
 interface InputProps {
+  type?: 'text' | 'email' | 'password'
   label: string
-  name: Path<SignUpFormInput | SignInFormInput>
+  name: string
   register: any
-  // register: UseFormRegister<SignUpFormInput | SignInFormInput>
   error?: string
 }
 
-const Input: FC<InputProps> = ({ label, name, register, error }) => {
+const Input: FC<InputProps> = ({
+  type = 'text',
+  label,
+  name,
+  register,
+  error,
+}) => {
   return (
     <div className={styles.root}>
       <label>{label}</label>
-      <input {...register(name)} placeholder={label} />
+      <input {...register(name)} placeholder={label} type={type} />
       {error && <span className={styles.error}>{error}</span>}
     </div>
   )
