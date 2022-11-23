@@ -94,7 +94,6 @@ const TodoForm: FC<TodoFormProps> = ({ mode = 'Add', todo, onClose }) => {
           <Button
             type="submit"
             text={mode}
-            onClick={() => {}}
             variant="contained"
             disabled={!isValid}
           />

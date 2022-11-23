@@ -8,7 +8,7 @@ interface ButtonProps {
   type?: 'button' | 'submit'
   variant?: 'contained' | 'outlined'
   disabled?: boolean
-  onClick: () => void
+  onClick?: () => void
   text: string
 }
 
