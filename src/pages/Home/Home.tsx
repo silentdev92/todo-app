@@ -34,7 +34,7 @@ const Home: FC = () => {
           <TodoItem />
         </div>
         {addTodoFormIsOpen ? (
-          <TodoForm />
+          <TodoForm onClose={() => setAddTodoFormIsOpen(false)} />
         ) : (
           <div
             className={styles['add-button']}
