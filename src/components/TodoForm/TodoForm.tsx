@@ -1,12 +1,21 @@
 import React, { FC } from 'react'
+import { Todo } from '../../store/todo/types'
 import { Button } from '../ui/Button'
 import styles from './TodoForm.module.sass'
 
 interface TodoFormProps {
   mode?: 'Add' | 'Edit'
+  todo?: Todo
+  onSubmit: (todo: Todo) => void
+  onCancel: () => void
 }
 
-const TodoForm: FC<TodoFormProps> = ({ mode = 'Add' }) => {
+const TodoForm: FC<TodoFormProps> = ({
+  mode = 'Add',
+  todo,
+  onSubmit,
+  onCancel,
+}) => {
   return (
     <form className={styles.root}>
       <div className={styles['text-fields']}>
