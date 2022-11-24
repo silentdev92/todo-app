@@ -1,4 +1,4 @@
-import React, { FC, useState } from 'react'
+import React, { FC, useEffect, useState } from 'react'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faCirclePlus } from '@fortawesome/free-solid-svg-icons'
 import { faCalendar, faCalendarDays } from '@fortawesome/free-solid-svg-icons'
@@ -6,9 +6,31 @@ import { SidebarItem } from '../../components/SidebarItem'
 import styles from './Home.module.sass'
 import { TodoItem } from '../../components/TodoItem'
 import { TodoForm } from '../../components/TodoForm'
+import { useAppSelector } from '../../hooks/useAppSelector'
+import { selectUser } from '../../store/auth/selectors'
+import { useAppDispatch } from '../../hooks/useAppDispatch'
+import TodoService from '../../api/TodoService'
+import { setTodos } from '../../store/todo/slice'
 
 const Home: FC = () => {
   const [addTodoFormIsOpen, setAddTodoFormIsOpen] = useState<boolean>(false)
+
+  const user = useAppSelector(selectUser)
+  const dispatch = useAppDispatch()
+
+  const fetchTodoList = async () => {
+    try {
+      const { data, error } = await TodoService.selectAll(user!.id)
+      if (error) throw error
+      dispatch(setTodos(data))
+    } catch (error) {
+      console.log(error)
+    }
+  }
+
+  useEffect(() => {
+    fetchTodoList()
+  }, [])
 
   return (
     <div className={styles.root}>
