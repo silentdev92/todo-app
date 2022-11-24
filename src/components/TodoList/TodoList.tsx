@@ -20,15 +20,11 @@ const TodoList: FC<TodoListProps> = ({ list }) => {
           <div className={styles.completed}>
             {completedTodoCount}/{list.length} completed
           </div>
-          <div className={styles.item}>
-            <TodoItem />
-          </div>
-          <div className={styles.item}>
-            <TodoItem />
-          </div>
-          <div className={styles.item}>
-            <TodoItem />
-          </div>
+          {list.map((item) => (
+            <div className={styles.item} key={item.id}>
+              <TodoItem item={item} />
+            </div>
+          ))}
         </>
       ) : (
         <span className={styles.empty}>No todos</span>
