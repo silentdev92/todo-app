@@ -7,23 +7,42 @@ import {
 } from '@fortawesome/free-solid-svg-icons'
 import styles from './TodoItem.module.sass'
 import { Todo } from '../../store/todo/types'
+import TodoService from '../../api/TodoService'
+import { useAppDispatch } from '../../hooks/useAppDispatch'
+import { updateTodo } from '../../store/todo/slice'
 
 interface TodoItemProps {
   item: Todo
 }
 
-const TodoItem: FC<TodoItemProps> = ({ item }) => {
+const TodoItem: FC<TodoItemProps> = ({
+  item: { id, title, description, completed },
+}) => {
   const [dropdownIsOpen, setDropdownIsOpen] = useState<boolean>(false)
+
+  const dispatch = useAppDispatch()
+
+  const toggleTodo = async () => {
+    try {
+      const { data, error } = await TodoService.update(id, {
+        completed: !completed,
+      })
+      if (error) throw error
+      dispatch(updateTodo({ id, data: data[0] }))
+    } catch (error) {
+      console.log(error)
+    }
+  }
 
   return (
     <div className={styles.root}>
       <div className={styles.checkbox}>
-        <input type="checkbox" checked={item.completed} />
+        <input type="checkbox" checked={completed} onChange={toggleTodo} />
       </div>
       <div className={styles.card}>
         <div className={styles.left}>
-          <span className={styles.title}>{item.title}</span>
-          <span className={styles.description}>{item.description}</span>
+          <span className={styles.title}>{title}</span>
+          <span className={styles.description}>{description}</span>
         </div>
         <div className={styles.right}>
           <div className={styles.icon}>
