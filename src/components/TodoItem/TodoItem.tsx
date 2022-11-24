@@ -9,7 +9,7 @@ import styles from './TodoItem.module.sass'
 import { Todo } from '../../store/todo/types'
 import TodoService from '../../api/TodoService'
 import { useAppDispatch } from '../../hooks/useAppDispatch'
-import { updateTodo } from '../../store/todo/slice'
+import { deleteTodo, updateTodo } from '../../store/todo/slice'
 
 interface TodoItemProps {
   item: Todo
@@ -29,6 +29,16 @@ const TodoItem: FC<TodoItemProps> = ({
       })
       if (error) throw error
       dispatch(updateTodo({ id, data: data[0] }))
+    } catch (error) {
+      console.log(error)
+    }
+  }
+
+  const removeTodo = async (id: number) => {
+    try {
+      const { error } = await TodoService.delete(id)
+      if (error) throw error
+      dispatch(deleteTodo(id))
     } catch (error) {
       console.log(error)
     }
@@ -57,7 +67,7 @@ const TodoItem: FC<TodoItemProps> = ({
         </div>
         {dropdownIsOpen && (
           <div className={styles.dropdown}>
-            <div className={styles.item}>
+            <div className={styles.item} onClick={() => removeTodo(id)}>
               <div className={styles.icon}>
                 <FontAwesomeIcon icon={faTrashCan} />
               </div>
