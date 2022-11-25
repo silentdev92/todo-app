@@ -10,73 +10,92 @@ import { Todo } from '../../store/todo/types'
 import TodoService from '../../api/TodoService'
 import { useAppDispatch } from '../../hooks/useAppDispatch'
 import { deleteTodo, updateTodo } from '../../store/todo/slice'
+import { TodoForm } from '../TodoForm'
 
 interface TodoItemProps {
   item: Todo
 }
 
-const TodoItem: FC<TodoItemProps> = ({
-  item: { id, title, description, completed },
-}) => {
+const TodoItem: FC<TodoItemProps> = ({ item }) => {
   const [dropdownIsOpen, setDropdownIsOpen] = useState<boolean>(false)
+  const [editFormIsOpen, setEditFormIsOpen] = useState<boolean>(false)
 
   const dispatch = useAppDispatch()
 
   const toggleTodo = async () => {
     try {
-      const { data, error } = await TodoService.update(id, {
-        completed: !completed,
+      const { data, error } = await TodoService.update(item.id, {
+        completed: !item.completed,
       })
       if (error) throw error
-      dispatch(updateTodo({ id, data: data[0] }))
+      dispatch(updateTodo({ id: item.id, data: data[0] }))
     } catch (error) {
       console.log(error)
     }
   }
 
-  const removeTodo = async (id: number) => {
+  const removeTodo = async () => {
     try {
-      const { error } = await TodoService.delete(id)
+      const { error } = await TodoService.delete(item.id)
       if (error) throw error
-      dispatch(deleteTodo(id))
+      dispatch(deleteTodo(item.id))
     } catch (error) {
       console.log(error)
     }
   }
 
   return (
-    <div className={styles.root}>
-      <div className={styles.checkbox}>
-        <input type="checkbox" checked={completed} onChange={toggleTodo} />
-      </div>
-      <div className={styles.card}>
-        <div className={styles.left}>
-          <span className={styles.title}>{title}</span>
-          <span className={styles.description}>{description}</span>
-        </div>
-        <div className={styles.right}>
-          <div className={styles.icon}>
-            <FontAwesomeIcon icon={faPenToSquare} />
+    <>
+      {!editFormIsOpen ? (
+        <div className={styles.root}>
+          <div className={styles.checkbox}>
+            <input
+              type="checkbox"
+              checked={item.completed}
+              onChange={toggleTodo}
+            />
           </div>
-          <div
-            className={styles.icon}
-            onClick={() => setDropdownIsOpen((prev) => !prev)}
-          >
-            <FontAwesomeIcon icon={faEllipsis} />
-          </div>
-        </div>
-        {dropdownIsOpen && (
-          <div className={styles.dropdown}>
-            <div className={styles.item} onClick={() => removeTodo(id)}>
-              <div className={styles.icon}>
-                <FontAwesomeIcon icon={faTrashCan} />
-              </div>
-              <span className={styles.text}>Delete</span>
+          <div className={styles.card}>
+            <div className={styles.left}>
+              <span className={styles.title}>{item.title}</span>
+              <span className={styles.description}>{item.description}</span>
             </div>
+            <div className={styles.right}>
+              <div
+                className={styles.icon}
+                onClick={() => setEditFormIsOpen(true)}
+              >
+                <FontAwesomeIcon icon={faPenToSquare} />
+              </div>
+              <div
+                className={styles.icon}
+                onClick={() => setDropdownIsOpen((prev) => !prev)}
+              >
+                <FontAwesomeIcon icon={faEllipsis} />
+              </div>
+            </div>
+            {dropdownIsOpen && (
+              <div className={styles.dropdown}>
+                <div className={styles.item} onClick={removeTodo}>
+                  <div className={styles.icon}>
+                    <FontAwesomeIcon icon={faTrashCan} />
+                  </div>
+                  <span className={styles.text}>Delete</span>
+                </div>
+              </div>
+            )}
           </div>
-        )}
-      </div>
-    </div>
+        </div>
+      ) : (
+        <div className={styles['edit-form']}>
+          <TodoForm
+            mode="Edit"
+            todo={item}
+            onClose={() => setEditFormIsOpen(false)}
+          />
+        </div>
+      )}
+    </>
   )
 }
 
