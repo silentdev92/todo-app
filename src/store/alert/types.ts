@@ -8,4 +8,9 @@ export interface Alert {
   text: string
 }
 
+export interface AlertAttributes {
+  type: AlertType
+  text: string
+}
+
 export type AlertType = 'error' | 'info' | 'warning' | 'success'
