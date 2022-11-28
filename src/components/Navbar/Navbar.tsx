@@ -13,6 +13,8 @@ import { useAppDispatch } from '../../hooks/useAppDispatch'
 import { useNavigate } from 'react-router-dom'
 import { signOut } from '../../store/auth/slice'
 import { CSSTransition } from 'react-transition-group'
+import { useAppSelector } from '../../hooks/useAppSelector'
+import { selectFullUserName } from '../../store/auth/selectors'
 
 const cx = classNames.bind(styles)
 
@@ -20,6 +22,8 @@ const Navbar: FC = () => {
   const [dropdownIsOpen, setDropdownIsOpen] = useState<boolean>(false)
   const dispatch = useAppDispatch()
   const navigate = useNavigate()
+
+  const fullUserName = useAppSelector(selectFullUserName)
 
   const signOutHandler = async () => {
     try {
@@ -42,7 +46,7 @@ const Navbar: FC = () => {
         className={styles.user}
         onClick={() => setDropdownIsOpen((prevState) => !prevState)}
       >
-        <span className={styles.name}>Ivan</span>
+        <span className={styles.name}>{fullUserName}</span>
       </div>
       <CSSTransition
         addEndListener={(node: HTMLElement, done: () => void) => {
