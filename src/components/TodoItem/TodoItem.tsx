@@ -5,6 +5,7 @@ import {
   faEllipsis,
   faTrashCan,
 } from '@fortawesome/free-solid-svg-icons'
+import { CSSTransition } from 'react-transition-group'
 import styles from './TodoItem.module.sass'
 import { Todo } from '../../store/todo/types'
 import TodoService from '../../api/TodoService'
@@ -74,7 +75,23 @@ const TodoItem: FC<TodoItemProps> = ({ item }) => {
                 <FontAwesomeIcon icon={faEllipsis} />
               </div>
             </div>
-            {dropdownIsOpen && (
+            <CSSTransition
+              addEndListener={(node: HTMLElement, done: () => void) => {
+                node.addEventListener('transitionend', done, false)
+              }}
+              in={dropdownIsOpen}
+              timeout={300}
+              classNames={{
+                enter: styles['fade-enter'],
+                enterActive: styles['fade-enter-active'],
+                enterDone: styles['fade-enter-done'],
+                exit: styles['fade-exit'],
+                exitActive: styles['fade-exit-active'],
+                exitDone: styles['fade-exit-done'],
+              }}
+              mountOnEnter
+              unmountOnExit
+            >
               <div className={styles.dropdown}>
                 <div className={styles.item} onClick={removeTodo}>
                   <div className={styles.icon}>
@@ -83,7 +100,7 @@ const TodoItem: FC<TodoItemProps> = ({ item }) => {
                   <span className={styles.text}>Delete</span>
                 </div>
               </div>
-            )}
+            </CSSTransition>
           </div>
         </div>
       ) : (

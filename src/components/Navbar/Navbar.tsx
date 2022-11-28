@@ -1,4 +1,4 @@
-import React, { FC, useState } from 'react'
+import React, { FC, useEffect, useState } from 'react'
 import {
   faTableList,
   faUser,
@@ -12,6 +12,7 @@ import AuthService from '../../api/AuthService'
 import { useAppDispatch } from '../../hooks/useAppDispatch'
 import { useNavigate } from 'react-router-dom'
 import { signOut } from '../../store/auth/slice'
+import { CSSTransition } from 'react-transition-group'
 
 const cx = classNames.bind(styles)
 
@@ -43,7 +44,23 @@ const Navbar: FC = () => {
       >
         <span className={styles.name}>Ivan</span>
       </div>
-      {dropdownIsOpen && (
+      <CSSTransition
+        addEndListener={(node: HTMLElement, done: () => void) => {
+          node.addEventListener('transitionend', done, false)
+        }}
+        in={dropdownIsOpen}
+        timeout={300}
+        classNames={{
+          enter: styles['fade-enter'],
+          enterActive: styles['fade-enter-active'],
+          enterDone: styles['fade-enter-done'],
+          exit: styles['fade-exit'],
+          exitActive: styles['fade-exit-active'],
+          exitDone: styles['fade-exit-done'],
+        }}
+        mountOnEnter
+        unmountOnExit
+      >
         <div className={styles.dropdown}>
           <ul className={styles.list}>
             <li className={styles.item}>
@@ -69,7 +86,7 @@ const Navbar: FC = () => {
             </li>
           </ul>
         </div>
-      )}
+      </CSSTransition>
     </div>
   )
 }

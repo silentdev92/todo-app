@@ -24,7 +24,7 @@
     .dropdown
         background-color: #fff
         border: 1px solid #D7D7D7
-        border-radius: 16px
+        border-radius: 10px
         width: 240px
         position: absolute
         right: 0
@@ -32,12 +32,12 @@
         z-index: 99
         overflow: hidden
         .list
-            padding: 6px 0
+            padding: 8px 0
             list-style: none
             .item
                 display: flex
                 align-items: center
-                padding: 6px 16px
+                padding: 4px 16px
                 color: #040404
                 cursor: pointer
                 transition: background-color 0.3s linear
@@ -56,3 +56,17 @@
             height: 1px
             width: 100%
             background-color: #D7D7D7
+.fade-enter
+    opacity: 0
+.fade-enter-active
+    opacity: 1
+    transition: opacity 300ms linear
+.fade-enter-done
+    opacity: 1
+.fade-exit
+    opacity: 1
+.fade-exit-active
+    opacity: 0
+    transition: opacity 300ms linear
+.fade-exit-done
+    opacity: 0
