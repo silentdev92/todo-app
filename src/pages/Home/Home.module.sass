@@ -17,7 +17,7 @@
         .list
             margin-bottom: 20px
         .add-button
-            display: flex
+            display: inline-flex
             align-items: center
             color: #FF4F5A
             cursor: pointer
@@ -30,3 +30,39 @@
                 font-size: 24px
             &:hover
                 color: #e5333f
+
+.fade-enter
+    opacity: 0
+.fade-enter-active
+    opacity: 1
+    transition: opacity 300ms linear
+.fade-enter-done
+    opacity: 1
+.fade-exit
+    opacity: 1
+.fade-exit-active
+    opacity: 0
+    transition: opacity 300ms linear
+.fade-exit-done
+    opacity: 0
+
+.slide-enter
+    opacity: 0
+    transform: translateX(100%)
+.slide-enter-active
+    opacity: 1
+    transform: translateX(0)
+    transition: opacity 300ms linear, transform 300ms linear
+.slide-enter-done
+    opacity: 1
+    transform: translateX(0)
+.slide-exit
+    opacity: 1
+    transform: translateX(0)
+.slide-exit-active
+    opacity: 0
+    transform: translateX(100%)
+    transition: opacity 300ms linear, transform 300ms linear
+.slide-exit-done
+    opacity: 0
+    transform: translateX(100%)
