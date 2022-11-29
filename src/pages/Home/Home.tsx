@@ -84,14 +84,7 @@ const Home: FC = () => {
           }}
           in={showForm}
           timeout={300}
-          classNames={{
-            enter: styles['slide-enter'],
-            enterActive: styles['slide-enter-active'],
-            enterDone: styles['slide-enter-done'],
-            exit: styles['slide-exit'],
-            exitActive: styles['slide-exit-active'],
-            exitDone: styles['slide-exit-done'],
-          }}
+          classNames="slide"
           mountOnEnter
           unmountOnExit
         >
@@ -103,14 +96,7 @@ const Home: FC = () => {
           }}
           in={showButton}
           timeout={300}
-          classNames={{
-            enter: styles['fade-enter'],
-            enterActive: styles['fade-enter-active'],
-            enterDone: styles['fade-enter-done'],
-            exit: styles['fade-exit'],
-            exitActive: styles['fade-exit-active'],
-            exitDone: styles['fade-exit-done'],
-          }}
+          classNames="fade"
           mountOnEnter
           unmountOnExit
         >

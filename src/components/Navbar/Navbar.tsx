@@ -54,14 +54,7 @@ const Navbar: FC = () => {
         }}
         in={dropdownIsOpen}
         timeout={300}
-        classNames={{
-          enter: styles['fade-enter'],
-          enterActive: styles['fade-enter-active'],
-          enterDone: styles['fade-enter-done'],
-          exit: styles['fade-exit'],
-          exitActive: styles['fade-exit-active'],
-          exitDone: styles['fade-exit-done'],
-        }}
+        classNames="fade"
         mountOnEnter
         unmountOnExit
       >

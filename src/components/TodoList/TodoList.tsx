@@ -29,14 +29,7 @@ const TodoList: FC<TodoListProps> = ({ list }) => {
                   node.addEventListener('transitionend', done, false)
                 }}
                 timeout={300}
-                classNames={{
-                  enter: styles['slide-enter'],
-                  enterActive: styles['slide-enter-active'],
-                  enterDone: styles['slide-enter-done'],
-                  exit: styles['slide-exit'],
-                  exitActive: styles['slide-exit-active'],
-                  exitDone: styles['slide-exit-done'],
-                }}
+                classNames="slide"
                 mountOnEnter
                 unmountOnExit
                 key={item.id}
