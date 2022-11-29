@@ -1,104 +1,109 @@
 .root
-    display: flex
-    .checkbox
-        padding-top: 10px
-        margin-right: 12px
-        input[type="checkbox"]
-            appearance: none
-            -webkit-appearance: none
-            width: 25px
-            height: 25px
-            background: #EAEAEA
-            border-radius: 50px
-            position: relative
-            cursor: pointer
-            transition: background-color 0.3s linear
-            &:hover
-                background-color: #d4d3d3
-            &::after
-                content: ''
-                position: absolute
-                width: 12px
-                height: 20px
-                border-right: 3px solid #FF4F5A
-                border-bottom: 3px solid #FF4F5A
-                transform: rotate(45deg)
-                position: absolute
-                bottom: 5px
-                right: 2px
-                display: none
-            &:checked
-                &::after
-                    display: block
-    .card
-        width: 100%
+    transition: height 300ms linear
+    &.display-item
+        height: 92px
+    &.display-form
+        height: 203px
+    .item
         display: flex
-        justify-content: space-between
-        border: 1px solid #E3E3E3
-        border-radius: 8px
-        position: relative
-        .left
-            font-family: 'Roboto'
-            font-weight: 400
-            padding: 8px 20px 20px
-            .title
-                display: block
-                font-size: 24px
-                color: #000
-                margin-bottom: 8px
-            .description
-                display: block
-                font-size: 22px
-                color: #787878
-        .right
+        .checkbox
+            padding-top: 10px
+            margin-right: 12px
+            input[type="checkbox"]
+                appearance: none
+                -webkit-appearance: none
+                width: 25px
+                height: 25px
+                background: #EAEAEA
+                border-radius: 50px
+                position: relative
+                cursor: pointer
+                transition: background-color 0.3s linear
+                &:hover
+                    background-color: #d4d3d3
+                &::after
+                    content: ''
+                    position: absolute
+                    width: 12px
+                    height: 20px
+                    border-right: 3px solid #FF4F5A
+                    border-bottom: 3px solid #FF4F5A
+                    transform: rotate(45deg)
+                    position: absolute
+                    bottom: 5px
+                    right: 2px
+                    display: none
+                &:checked
+                    &::after
+                        display: block
+        .card
+            width: 100%
             display: flex
-            padding: 16px 30px
-            .icon
-                width: 35px
-                height: 35px
+            justify-content: space-between
+            border: 1px solid #E3E3E3
+            border-radius: 8px
+            position: relative
+            .left
+                font-family: 'Roboto'
+                font-weight: 400
+                padding: 8px 20px 20px
+                .title
+                    display: block
+                    font-size: 24px
+                    color: #000
+                    margin-bottom: 8px
+                .description
+                    display: block
+                    font-size: 22px
+                    color: #787878
+            .right
                 display: flex
-                justify-content: center
-                align-items: center
-                font-size: 24px
-                color: #8E8E8E
-                cursor: pointer
-                border-radius: 8px
-                transition: background-color 0.3s linear
-                &:hover
-                    background-color: #eee
-                &:not(:last-child)
-                    margin-right: 20px
-        .dropdown
-            width: 176px
-            height: 59px
-            background: #fff
-            border: 1px solid #DADADA
-            box-shadow: 2px 2px 12px 2px rgba(0, 0, 0, 0.19)
-            border-radius: 6px
-            padding: 8px 0
-            position: absolute
-            top: 52px
-            right: 32px
-            z-index: 99
-            .item
-                height: 100%
-                display: flex
-                align-items: center
-                cursor: pointer
-                padding-left: 16px
-                color: #FF4F5A
-                transition: background-color 0.3s linear
+                padding: 16px 30px
                 .icon
-                    font-size: 15px
-                    margin-right: 9px
-                .text
-                    font-family: 'Roboto'
-                    font-weight: 400
-                    font-size: 18px
-                &:hover
-                    background-color: #eee
-.edit-form
-    margin-top: 10px
+                    width: 35px
+                    height: 35px
+                    display: flex
+                    justify-content: center
+                    align-items: center
+                    font-size: 24px
+                    color: #8E8E8E
+                    cursor: pointer
+                    border-radius: 8px
+                    transition: background-color 0.3s linear
+                    &:hover
+                        background-color: #eee
+                    &:not(:last-child)
+                        margin-right: 20px
+            .dropdown
+                width: 176px
+                height: 59px
+                background: #fff
+                border: 1px solid #DADADA
+                box-shadow: 2px 2px 12px 2px rgba(0, 0, 0, 0.19)
+                border-radius: 6px
+                padding: 8px 0
+                position: absolute
+                top: 52px
+                right: 32px
+                z-index: 99
+                .item
+                    height: 100%
+                    display: flex
+                    align-items: center
+                    cursor: pointer
+                    padding-left: 16px
+                    color: #FF4F5A
+                    transition: background-color 0.3s linear
+                    .icon
+                        font-size: 15px
+                        margin-right: 9px
+                    .text
+                        font-family: 'Roboto'
+                        font-weight: 400
+                        font-size: 18px
+                    &:hover
+                        background-color: #eee
+
 .fade-enter
     opacity: 0
 .fade-enter-active
@@ -113,3 +118,24 @@
     transition: opacity 300ms linear
 .fade-exit-done
     opacity: 0
+
+.slide-enter
+    opacity: 0
+    transform: translateX(100%)
+.slide-enter-active
+    opacity: 1
+    transform: translateX(0)
+    transition: opacity 300ms linear, transform 300ms linear
+.slide-enter-done
+    opacity: 1
+    transform: translateX(0)
+.slide-exit
+    opacity: 1
+    transform: translateX(0)
+.slide-exit-active
+    opacity: 0
+    transform: translateX(100%)
+    transition: opacity 300ms linear, transform 300ms linear
+.slide-exit-done
+    opacity: 0
+    transform: translateX(100%)

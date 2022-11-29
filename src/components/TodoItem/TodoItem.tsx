@@ -1,4 +1,4 @@
-import React, { FC, useState } from 'react'
+import React, { FC, useEffect, useState } from 'react'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import {
   faPenToSquare,
@@ -6,12 +6,16 @@ import {
   faTrashCan,
 } from '@fortawesome/free-solid-svg-icons'
 import { CSSTransition } from 'react-transition-group'
+import classNames from 'classnames/bind'
 import styles from './TodoItem.module.sass'
 import { Todo } from '../../store/todo/types'
 import TodoService from '../../api/TodoService'
 import { useAppDispatch } from '../../hooks/useAppDispatch'
 import { deleteTodo, updateTodo } from '../../store/todo/slice'
 import { TodoForm } from '../TodoForm'
+import { delay } from '../../helpers/delay'
+
+const cx = classNames.bind(styles)
 
 interface TodoItemProps {
   item: Todo
@@ -20,6 +24,25 @@ interface TodoItemProps {
 const TodoItem: FC<TodoItemProps> = ({ item }) => {
   const [dropdownIsOpen, setDropdownIsOpen] = useState<boolean>(false)
   const [editFormIsOpen, setEditFormIsOpen] = useState<boolean>(false)
+
+  const [showItem, setShowItem] = useState<boolean>(true)
+  const [showForm, setshowForm] = useState<boolean>(false)
+
+  const changeDisplay = async () => {
+    if (editFormIsOpen) {
+      setShowItem(false)
+      await delay(300)
+      setshowForm(true)
+    } else {
+      setshowForm(false)
+      await delay(300)
+      setShowItem(true)
+    }
+  }
+
+  useEffect(() => {
+    changeDisplay()
+  }, [editFormIsOpen])
 
   const dispatch = useAppDispatch()
 
@@ -46,73 +69,112 @@ const TodoItem: FC<TodoItemProps> = ({ item }) => {
   }
 
   return (
-    <>
-      {!editFormIsOpen ? (
-        <div className={styles.root}>
-          <div className={styles.checkbox}>
-            <input
-              type="checkbox"
-              checked={item.completed}
-              onChange={toggleTodo}
-            />
-          </div>
-          <div className={styles.card}>
-            <div className={styles.left}>
-              <span className={styles.title}>{item.title}</span>
-              <span className={styles.description}>{item.description}</span>
+    <div
+      className={cx('root', {
+        'display-item': !editFormIsOpen,
+        'display-form': editFormIsOpen,
+      })}
+    >
+      <div>
+        <CSSTransition
+          addEndListener={(node: HTMLElement, done: () => void) => {
+            node.addEventListener('transitionend', done, false)
+          }}
+          in={showItem}
+          timeout={300}
+          classNames={{
+            enter: styles['slide-enter'],
+            enterActive: styles['slide-enter-active'],
+            enterDone: styles['slide-enter-done'],
+            exit: styles['slide-exit'],
+            exitActive: styles['slide-exit-active'],
+            exitDone: styles['slide-exit-done'],
+          }}
+          mountOnEnter
+          unmountOnExit
+        >
+          <div className={styles.item}>
+            <div className={styles.checkbox}>
+              <input
+                type="checkbox"
+                checked={item.completed}
+                onChange={toggleTodo}
+              />
             </div>
-            <div className={styles.right}>
-              <div
-                className={styles.icon}
-                onClick={() => setEditFormIsOpen(true)}
-              >
-                <FontAwesomeIcon icon={faPenToSquare} />
+            <div className={styles.card}>
+              <div className={styles.left}>
+                <span className={styles.title}>{item.title}</span>
+                <span className={styles.description}>{item.description}</span>
               </div>
-              <div
-                className={styles.icon}
-                onClick={() => setDropdownIsOpen((prev) => !prev)}
-              >
-                <FontAwesomeIcon icon={faEllipsis} />
-              </div>
-            </div>
-            <CSSTransition
-              addEndListener={(node: HTMLElement, done: () => void) => {
-                node.addEventListener('transitionend', done, false)
-              }}
-              in={dropdownIsOpen}
-              timeout={300}
-              classNames={{
-                enter: styles['fade-enter'],
-                enterActive: styles['fade-enter-active'],
-                enterDone: styles['fade-enter-done'],
-                exit: styles['fade-exit'],
-                exitActive: styles['fade-exit-active'],
-                exitDone: styles['fade-exit-done'],
-              }}
-              mountOnEnter
-              unmountOnExit
-            >
-              <div className={styles.dropdown}>
-                <div className={styles.item} onClick={removeTodo}>
-                  <div className={styles.icon}>
-                    <FontAwesomeIcon icon={faTrashCan} />
-                  </div>
-                  <span className={styles.text}>Delete</span>
+              <div className={styles.right}>
+                <div
+                  className={styles.icon}
+                  onClick={() => setEditFormIsOpen(true)}
+                >
+                  <FontAwesomeIcon icon={faPenToSquare} />
+                </div>
+                <div
+                  className={styles.icon}
+                  onClick={() => setDropdownIsOpen((prev) => !prev)}
+                >
+                  <FontAwesomeIcon icon={faEllipsis} />
                 </div>
               </div>
-            </CSSTransition>
+              <CSSTransition
+                addEndListener={(node: HTMLElement, done: () => void) => {
+                  node.addEventListener('transitionend', done, false)
+                }}
+                in={dropdownIsOpen}
+                timeout={300}
+                classNames={{
+                  enter: styles['fade-enter'],
+                  enterActive: styles['fade-enter-active'],
+                  enterDone: styles['fade-enter-done'],
+                  exit: styles['fade-exit'],
+                  exitActive: styles['fade-exit-active'],
+                  exitDone: styles['fade-exit-done'],
+                }}
+                mountOnEnter
+                unmountOnExit
+              >
+                <div className={styles.dropdown}>
+                  <div className={styles.item} onClick={removeTodo}>
+                    <div className={styles.icon}>
+                      <FontAwesomeIcon icon={faTrashCan} />
+                    </div>
+                    <span className={styles.text}>Delete</span>
+                  </div>
+                </div>
+              </CSSTransition>
+            </div>
           </div>
-        </div>
-      ) : (
-        <div className={styles['edit-form']}>
+        </CSSTransition>
+
+        <CSSTransition
+          addEndListener={(node: HTMLElement, done: () => void) => {
+            node.addEventListener('transitionend', done, false)
+          }}
+          in={showForm}
+          timeout={300}
+          classNames={{
+            enter: styles['slide-enter'],
+            enterActive: styles['slide-enter-active'],
+            enterDone: styles['slide-enter-done'],
+            exit: styles['slide-exit'],
+            exitActive: styles['slide-exit-active'],
+            exitDone: styles['slide-exit-done'],
+          }}
+          mountOnEnter
+          unmountOnExit
+        >
           <TodoForm
             mode="Edit"
             todo={item}
             onClose={() => setEditFormIsOpen(false)}
           />
-        </div>
-      )}
-    </>
+        </CSSTransition>
+      </div>
+    </div>
   )
 }
 
