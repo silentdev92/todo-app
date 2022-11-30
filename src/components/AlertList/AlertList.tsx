@@ -1,4 +1,6 @@
 import React from 'react'
+import { TransitionGroup } from 'react-transition-group'
+import { CSSTransition } from 'react-transition-group'
 import { useAppSelector } from '../../hooks/useAppSelector'
 import { selectAlertList } from '../../store/alert/selectors'
 import { Alert } from '../ui/Alert'
@@ -9,12 +11,26 @@ const AlertList = () => {
 
   return (
     <div className={styles.root}>
-      {!!alertList.length &&
-        alertList.map(({ id, text, type }) => (
-          <div className={styles.item} key={id}>
-            <Alert type={type} text={text} />
-          </div>
-        ))}
+      {!!alertList.length && (
+        <TransitionGroup>
+          {alertList.map(({ id, text, type }) => (
+            <CSSTransition
+              addEndListener={(node: HTMLElement, done: () => void) => {
+                node.addEventListener('transitionend', done, false)
+              }}
+              timeout={300}
+              classNames="slide"
+              mountOnEnter
+              unmountOnExit
+              key={id}
+            >
+              <div className={styles.item}>
+                <Alert type={type} text={text} />
+              </div>
+            </CSSTransition>
+          ))}
+        </TransitionGroup>
+      )}
     </div>
   )
 }
