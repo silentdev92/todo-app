@@ -1,7 +1,7 @@
+@use './../../../styles/_variables' as var
+
 .root
-    font-family: 'Roboto'
-    font-weight: 400
-    color: #000
+    color: var.$black-color
     margin-bottom: 30px
     position: relative
     label
@@ -10,12 +10,13 @@
         margin-bottom: 5px
     input
         width: 100%
-        border: 1px solid #D8D8D8
+        border: 1px solid var.$light-grey-color
         border-radius: 4px
         padding: 10px 17px
         font-size: 18px
+        outline: none
         &:placeholder
-            color: #ABABAB
+            color: var.$light-grey-color
     .error
         position: absolute
         left: 10px

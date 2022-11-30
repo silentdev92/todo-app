@@ -1,0 +1,17 @@
+@use './_variables' as var
+
+@mixin mobile
+    @media only screen and (max-width: var.$breakpoint-mobile)
+        @content
+
+@mixin tablet
+    @media only screen and (max-width: var.$breakpoint-tablet)
+        @content
+
+@mixin laptop
+    @media only screen and (max-width: var.$breakpoint-laptop)
+        @content
+
+@mixin desktop
+    @media only screen and (max-width: var.$breakpoint-desktop)
+        @content

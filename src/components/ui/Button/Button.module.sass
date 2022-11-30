@@ -1,9 +1,10 @@
+@use './../../../styles/_variables' as var
+
 .root
     width: 120px
     height: 39px
     border-radius: 8px
     font-family: 'Rosario'
-    font-style: normal
     font-weight: 700
     font-size: 18px
     text-align: center
@@ -12,22 +13,22 @@
         cursor: default
     &.contained
         color: #fff
-        background-color: #FF4F5A
+        background-color: var.$red-color
         border: none
         transition: background-color 0.3s linear
-        &:disabled
-            background-color: #ccc
         &:hover
             background-color: #e5333f
+        &:disabled
+            background-color: #ccc
     &.outlined
-        color: #FF4F5A
+        color: var.$red-color
         background-color: #fff
-        border: 1px solid #FF4F5A
+        border: 1px solid var.$red-color
         transition: all 0.3s linear
         transition-property: color, border
-        &:disabled
-            color: #ccc
-            border: 1px solid #ccc
         &:hover
             color: #e5333f
             border: 1px solid #e5333f
+        &:disabled
+            color: #ccc
+            border: 1px solid #ccc

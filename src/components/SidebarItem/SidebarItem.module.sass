@@ -1,19 +1,19 @@
+@use './../../styles/_variables' as var
+
 .root
     display: flex
     align-items: center
-    color: #6B6B6B
+    color: var.$dark-grey-color
     transition: color 0.3s linear
     cursor: pointer
     .icon
         font-size: 30px
         margin-right: 20px
     .text
-        font-family: 'Roboto'
-        font-weight: 400
         font-size: 24px
     &.active
-        color: #FF4F5A
+        color: var.$red-color
     &:hover
-        color: #FF4F5A
+        color: var.$red-color
     &:not(:last-child)
         margin-bottom: 25px
