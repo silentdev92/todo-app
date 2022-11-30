@@ -10,7 +10,7 @@ import classNames from 'classnames/bind'
 import styles from './Navbar.module.sass'
 import AuthService from '../../api/AuthService'
 import { useAppDispatch } from '../../hooks/useAppDispatch'
-import { useNavigate } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import { signOut } from '../../store/auth/slice'
 import { CSSTransition } from 'react-transition-group'
 import { useAppSelector } from '../../hooks/useAppSelector'
@@ -32,6 +32,16 @@ const Navbar: FC = () => {
       dispatch(signOut())
       navigate('/signin')
     } catch (error: any) {}
+  }
+
+  const navigateToProfile = () => {
+    navigate('/profile')
+    setDropdownIsOpen(false)
+  }
+
+  const navigateToSettings = () => {
+    navigate('/profile?tab=settings')
+    setDropdownIsOpen(false)
   }
 
   return (
@@ -60,13 +70,13 @@ const Navbar: FC = () => {
       >
         <div className={styles.dropdown}>
           <ul className={styles.list}>
-            <li className={styles.item}>
+            <li className={styles.item} onClick={navigateToProfile}>
               <span className={styles.icon}>
                 <FontAwesomeIcon icon={faUser} />
               </span>
               <span className={styles.text}>Profile</span>
             </li>
-            <li className={styles.item}>
+            <li className={styles.item} onClick={navigateToSettings}>
               <span className={styles.icon}>
                 <FontAwesomeIcon icon={faSliders} />
               </span>
