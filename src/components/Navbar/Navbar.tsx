@@ -15,11 +15,13 @@ import { signOut } from '../../store/auth/slice'
 import { CSSTransition } from 'react-transition-group'
 import { useAppSelector } from '../../hooks/useAppSelector'
 import { selectFullUserName } from '../../store/auth/selectors'
+import { useDropdownVisible } from '../../hooks/useDropdownVisible'
 
 const cx = classNames.bind(styles)
 
 const Navbar: FC = () => {
-  const [dropdownIsOpen, setDropdownIsOpen] = useState<boolean>(false)
+  const { dropdownRef, dropdownIsOpen, setDropdownIsOpen } =
+    useDropdownVisible()
   const dispatch = useAppDispatch()
   const navigate = useNavigate()
 
@@ -30,8 +32,13 @@ const Navbar: FC = () => {
       const { error } = await AuthService.signOut()
       if (error) throw error
       dispatch(signOut())
+      setDropdownIsOpen(false)
       navigate('/signin')
     } catch (error: any) {}
+  }
+
+  const navigateToHome = () => {
+    navigate('/home')
   }
 
   const navigateToProfile = () => {
@@ -46,16 +53,13 @@ const Navbar: FC = () => {
 
   return (
     <div className={styles.root}>
-      <div className={styles.logo}>
+      <div className={styles.logo} onClick={navigateToHome}>
         <span className={styles.icon}>
           <FontAwesomeIcon icon={faTableList} />
         </span>
         <span className={styles.text}>Todo App</span>
       </div>
-      <div
-        className={styles.user}
-        onClick={() => setDropdownIsOpen((prevState) => !prevState)}
-      >
+      <div className={styles.user} onClick={() => setDropdownIsOpen(true)}>
         <span className={styles.name}>{fullUserName}</span>
       </div>
       <CSSTransition
@@ -68,7 +72,7 @@ const Navbar: FC = () => {
         mountOnEnter
         unmountOnExit
       >
-        <div className={styles.dropdown}>
+        <div className={styles.dropdown} ref={dropdownRef}>
           <ul className={styles.list}>
             <li className={styles.item} onClick={navigateToProfile}>
               <span className={styles.icon}>

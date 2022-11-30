@@ -14,6 +14,7 @@ import { useAppDispatch } from '../../hooks/useAppDispatch'
 import { deleteTodo, updateTodo } from '../../store/todo/slice'
 import { TodoForm } from '../TodoForm'
 import { delay } from '../../helpers/delay'
+import { useDropdownVisible } from '../../hooks/useDropdownVisible'
 
 const cx = classNames.bind(styles)
 
@@ -22,7 +23,8 @@ interface TodoItemProps {
 }
 
 const TodoItem: FC<TodoItemProps> = ({ item }) => {
-  const [dropdownIsOpen, setDropdownIsOpen] = useState<boolean>(false)
+  const { dropdownRef, dropdownIsOpen, setDropdownIsOpen } =
+    useDropdownVisible()
   const [editFormIsOpen, setEditFormIsOpen] = useState<boolean>(false)
 
   const [showItem, setShowItem] = useState<boolean>(true)
@@ -108,7 +110,7 @@ const TodoItem: FC<TodoItemProps> = ({ item }) => {
                 </div>
                 <div
                   className={styles.icon}
-                  onClick={() => setDropdownIsOpen((prev) => !prev)}
+                  onClick={() => setDropdownIsOpen(true)}
                 >
                   <FontAwesomeIcon icon={faEllipsis} />
                 </div>
@@ -123,7 +125,7 @@ const TodoItem: FC<TodoItemProps> = ({ item }) => {
                 mountOnEnter
                 unmountOnExit
               >
-                <div className={styles.dropdown}>
+                <div className={styles.dropdown} ref={dropdownRef}>
                   <div className={styles.item} onClick={removeTodo}>
                     <div className={styles.icon}>
                       <FontAwesomeIcon icon={faTrashCan} />
