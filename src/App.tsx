@@ -1,4 +1,4 @@
-import React, { FC, useEffect } from 'react'
+import React, { FC, useEffect, useState } from 'react'
 import { BrowserRouter } from 'react-router-dom'
 import AuthService from './api/AuthService'
 import { AlertList } from './components/AlertList'
@@ -7,6 +7,7 @@ import { useAppDispatch } from './hooks/useAppDispatch'
 import { signIn } from './store/auth/slice'
 
 const App: FC = () => {
+  const [isLoading, setIsLoading] = useState<boolean>(true)
   const dispatch = useAppDispatch()
 
   const signInFromSession = async () => {
@@ -14,9 +15,14 @@ const App: FC = () => {
       const { data, error } = await AuthService.getSession()
       if (error) throw error
       if (data.session) {
-        dispatch(signIn(data.session.user))
+        const { data, error } = await AuthService.refreshSession()
+        if (error) throw error
+        if (data.session && data.user) dispatch(signIn(data.user))
       }
-    } catch (error: any) {}
+    } catch (error: any) {
+    } finally {
+      setIsLoading(false)
+    }
   }
 
   useEffect(() => {
@@ -25,9 +31,11 @@ const App: FC = () => {
 
   return (
     <>
-      <BrowserRouter>
-        <AppRouter />
-      </BrowserRouter>
+      {!isLoading && (
+        <BrowserRouter>
+          <AppRouter />
+        </BrowserRouter>
+      )}
       <AlertList />
     </>
   )
