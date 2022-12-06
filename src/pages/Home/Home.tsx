@@ -12,7 +12,10 @@ import { useAppDispatch } from '../../hooks/useAppDispatch'
 import TodoService from '../../api/TodoService'
 import { setTodos } from '../../store/todo/slice'
 import { TodoList } from '../../components/TodoList'
-import { selectTodoList } from '../../store/todo/selectors'
+import {
+  selectSortedTodoLists,
+  selectTodoList,
+} from '../../store/todo/selectors'
 import { delay } from '../../helpers/delay'
 
 const Home: FC = () => {
@@ -38,6 +41,8 @@ const Home: FC = () => {
   }, [addTodoFormIsOpen])
 
   const list = useAppSelector(selectTodoList)
+  const sortedTodoLists = useAppSelector(selectSortedTodoLists)
+  console.log(sortedTodoLists)
 
   const user = useAppSelector(selectUser)
   const dispatch = useAppDispatch()
