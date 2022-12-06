@@ -1,0 +1,35 @@
+@use './../../styles/_variables' as var
+
+.root
+    .title
+        font-weight: 700
+        font-size: 48px
+        color: var.$red-color
+        margin-bottom: 20px
+    .month
+        font-size: 24px
+        color: var.$black-color
+        margin-bottom: 20px
+    .days
+        display: flex
+        padding: 0 20px
+        border-bottom: 1px solid var.$light-grey-color
+        margin-bottom: 20px
+        .item
+            display: flex
+            align-items: center
+            justify-content: center
+            width: 70px
+            height: 80px
+            margin: 0 5px
+            font-size: 48px
+            color: var.$red-color
+            border-bottom: 3px solid #fff
+            cursor: pointer
+            transition: border-bottom 300ms linear
+            &:hover
+                border-bottom: 3px solid var.$red-color
+            &.active
+                border-bottom: 3px solid var.$red-color
+    .list
+        margin-bottom: 20px
