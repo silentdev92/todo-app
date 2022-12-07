@@ -1,4 +1,5 @@
 import React, { FC, useEffect, useState } from 'react'
+import { HelmetProvider } from 'react-helmet-async'
 import { BrowserRouter } from 'react-router-dom'
 import AuthService from './api/AuthService'
 import { AlertList } from './components/AlertList'
@@ -32,9 +33,11 @@ const App: FC = () => {
   return (
     <>
       {!isLoading && (
-        <BrowserRouter>
-          <AppRouter />
-        </BrowserRouter>
+        <HelmetProvider>
+          <BrowserRouter>
+            <AppRouter />
+          </BrowserRouter>
+        </HelmetProvider>
       )}
       <AlertList />
     </>

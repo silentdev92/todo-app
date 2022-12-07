@@ -1,4 +1,5 @@
 import React, { FC, useEffect, useState } from 'react'
+import { Helmet } from 'react-helmet-async'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faCalendar, faCalendarDays } from '@fortawesome/free-solid-svg-icons'
 import { SidebarItem } from '../../components/SidebarItem'
@@ -47,36 +48,41 @@ const Home: FC = () => {
   }, [sortedTodoLists.length])
 
   return (
-    <div className={styles.root}>
-      <div className={styles.sidebar}>
-        {sortedTodoLists.map(({ id, title }) => (
-          <SidebarItem
-            icon={
-              <FontAwesomeIcon
-                icon={
-                  title === 'Today' || title === 'Yesterday'
-                    ? faCalendar
-                    : faCalendarDays
-                }
-              />
-            }
-            text={title}
-            active={currentTodoList?.id === id}
-            onClick={() => changeCurrentTodoList(id)}
-            key={id}
-          />
-        ))}
-      </div>
-      <div className={styles.main}>
-        {currentTodoList &&
-          (currentTodoList.title === 'Today' ||
-          currentTodoList.title === 'Yesterday' ? (
-            <DailyTodos todoList={currentTodoList} />
-          ) : (
-            <MonthlyTodos todoList={currentTodoList} />
+    <>
+      <Helmet>
+        <title>Home - Todo App</title>
+      </Helmet>
+      <div className={styles.root}>
+        <div className={styles.sidebar}>
+          {sortedTodoLists.map(({ id, title }) => (
+            <SidebarItem
+              icon={
+                <FontAwesomeIcon
+                  icon={
+                    title === 'Today' || title === 'Yesterday'
+                      ? faCalendar
+                      : faCalendarDays
+                  }
+                />
+              }
+              text={title}
+              active={currentTodoList?.id === id}
+              onClick={() => changeCurrentTodoList(id)}
+              key={id}
+            />
           ))}
+        </div>
+        <div className={styles.main}>
+          {currentTodoList &&
+            (currentTodoList.title === 'Today' ||
+            currentTodoList.title === 'Yesterday' ? (
+              <DailyTodos todoList={currentTodoList} />
+            ) : (
+              <MonthlyTodos todoList={currentTodoList} />
+            ))}
+        </div>
       </div>
-    </div>
+    </>
   )
 }
 
