@@ -31,19 +31,18 @@ class AuthService {
   getUser() {
     return supabase.auth.getUser()
   }
-  updateUser(
-    email: string,
-    password: string,
-    firstName: string,
-    lastName: string
-  ) {
+  updateUserData(email: string, firstName: string, lastName: string) {
     return supabase.auth.updateUser({
       email,
-      password,
       data: {
         firstName,
         lastName,
       },
+    })
+  }
+  updateUserPassword(password: string) {
+    return supabase.auth.updateUser({
+      password,
     })
   }
 }

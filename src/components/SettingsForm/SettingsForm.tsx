@@ -5,6 +5,12 @@ import { SubmitHandler, useForm } from 'react-hook-form'
 import { Button } from '../ui/Button'
 import { Input } from '../ui/Input'
 import styles from './SettingsForm.module.sass'
+import AuthService from '../../api/AuthService'
+import { useAppDispatch } from '../../hooks/useAppDispatch'
+import { useAppSelector } from '../../hooks/useAppSelector'
+import { selectUser } from '../../store/auth/selectors'
+import { signOut } from '../../store/auth/slice'
+import { setAlert } from '../../store/alert/async'
 
 export interface FormInput {
   password: string
@@ -26,6 +32,9 @@ const schema = yup.object().shape({
 })
 
 const SettingsForm = () => {
+  const dispatch = useAppDispatch()
+  const user = useAppSelector(selectUser)
+
   const {
     register,
     handleSubmit,
@@ -36,23 +45,38 @@ const SettingsForm = () => {
     resolver: yupResolver(schema),
   })
 
-  const onSubmit: SubmitHandler<FormInput> = async ({
-    password,
-    passwordConfirm,
-  }) => {
-    console.log(password, passwordConfirm)
+  const onSubmit: SubmitHandler<FormInput> = async ({ password }) => {
+    try {
+      const { error } = await AuthService.updateUserPassword(password)
+      if (error) throw error
+      dispatch(
+        setAlert({
+          type: 'success',
+          text: 'User password successfully updated',
+        })
+      )
+      if (!error) {
+        const { error } = await AuthService.signOut()
+        if (error) throw error
+        dispatch(signOut())
+      }
+    } catch (error: any) {
+      dispatch(setAlert({ type: 'error', text: error.message }))
+    }
   }
 
   return (
     <form className={styles.root} onSubmit={handleSubmit(onSubmit)}>
       <Input
-        label="Password"
+        type="password"
+        label="New password"
         name="password"
         register={register}
         error={errors.password?.message}
       />
       <Input
-        label="Confirm password"
+        type="password"
+        label="Confirm new password"
         name="passwordConfirm"
         register={register}
         error={errors.passwordConfirm?.message}

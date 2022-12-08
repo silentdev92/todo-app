@@ -1,10 +1,16 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import * as yup from 'yup'
 import { yupResolver } from '@hookform/resolvers/yup'
 import { SubmitHandler, useForm } from 'react-hook-form'
 import { Button } from '../ui/Button'
 import { Input } from '../ui/Input'
 import styles from './ProfileForm.module.sass'
+import AuthService from '../../api/AuthService'
+import { useAppSelector } from '../../hooks/useAppSelector'
+import { selectUser } from '../../store/auth/selectors'
+import { useAppDispatch } from '../../hooks/useAppDispatch'
+import { updateUser } from '../../store/auth/slice'
+import { setAlert } from '../../store/alert/async'
 
 export interface FormInput {
   email: string
@@ -30,11 +36,15 @@ const schema = yup.object().shape({
 })
 
 const ProfileForm = () => {
+  const dispatch = useAppDispatch()
+  const user = useAppSelector(selectUser)
+
   const {
     register,
     handleSubmit,
     formState: { errors, isValid },
     reset,
+    setValue,
   } = useForm<FormInput>({
     mode: 'onBlur',
     resolver: yupResolver(schema),
@@ -45,8 +55,27 @@ const ProfileForm = () => {
     firstName,
     lastName,
   }) => {
-    console.log(email, firstName, lastName)
+    try {
+      const { data, error } = await AuthService.updateUserData(
+        email,
+        firstName,
+        lastName
+      )
+      if (error) throw error
+      dispatch(updateUser(data.user))
+      dispatch(
+        setAlert({ type: 'success', text: 'User data successfully updated' })
+      )
+    } catch (error: any) {
+      dispatch(setAlert({ type: 'error', text: error.message }))
+    }
   }
+
+  useEffect(() => {
+    setValue('email', user?.email!)
+    setValue('firstName', user?.user_metadata.firstName)
+    setValue('lastName', user?.user_metadata.lastName)
+  }, [])
 
   return (
     <form className={styles.root} onSubmit={handleSubmit(onSubmit)}>
@@ -63,6 +92,7 @@ const ProfileForm = () => {
         error={errors.lastName?.message}
       />
       <Input
+        type="email"
         label="Email address"
         name="email"
         register={register}
