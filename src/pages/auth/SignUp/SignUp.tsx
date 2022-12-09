@@ -4,6 +4,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faTableList } from '@fortawesome/free-solid-svg-icons'
 import { Link, useNavigate } from 'react-router-dom'
 import * as yup from 'yup'
+import classNames from 'classnames/bind'
 import styles from '../auth.module.sass'
 import { useForm, SubmitHandler } from 'react-hook-form'
 import { yupResolver } from '@hookform/resolvers/yup'
@@ -11,6 +12,8 @@ import { Input } from '../../../components/ui/Input'
 import AuthService from '../../../api/AuthService'
 import { useAppDispatch } from '../../../hooks/useAppDispatch'
 import { signIn } from '../../../store/auth/slice'
+
+const cx = classNames.bind(styles)
 
 export interface SignUpFormInput {
   email: string
@@ -49,6 +52,7 @@ const schema = yup.object().shape({
 })
 
 const SignUp: FC = () => {
+  const [isLoading, setIsLoading] = useState<boolean>(false)
   const [signUpError, setSignUpError] = useState<string | null>(null)
   const dispatch = useAppDispatch()
   const navigate = useNavigate()
@@ -69,6 +73,7 @@ const SignUp: FC = () => {
     lastName,
   }) => {
     try {
+      setIsLoading(true)
       const { data, error } = await AuthService.signUp(
         email,
         password,
@@ -80,6 +85,8 @@ const SignUp: FC = () => {
       navigate('/home')
     } catch (error: any) {
       setSignUpError(error.message)
+    } finally {
+      setIsLoading(false)
     }
   }
 
@@ -111,27 +118,29 @@ const SignUp: FC = () => {
               error={errors.lastName?.message}
             />
             <Input
+              type="email"
               label="Email address"
               name="email"
               register={register}
               error={errors.email?.message}
             />
             <Input
+              type="password"
               label="Password"
               name="password"
               register={register}
               error={errors.password?.message}
             />
             <Input
+              type="password"
               label="Confirm password"
               name="passwordConfirm"
               register={register}
               error={errors.passwordConfirm?.message}
             />
-
-            <div className={styles.button}>
-              <button type="submit" disabled={!isValid}>
-                Sign up
+            <div className={cx('button', { loading: isLoading })}>
+              <button type="submit" disabled={!isValid || isLoading}>
+                <span>Sign up</span>
               </button>
               {signUpError && (
                 <span className={styles.error}>{signUpError}</span>

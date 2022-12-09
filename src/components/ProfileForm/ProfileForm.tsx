@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import * as yup from 'yup'
 import { yupResolver } from '@hookform/resolvers/yup'
 import { SubmitHandler, useForm } from 'react-hook-form'
@@ -36,6 +36,8 @@ const schema = yup.object().shape({
 })
 
 const ProfileForm = () => {
+  const [isLoading, setIsLoading] = useState<boolean>(false)
+
   const dispatch = useAppDispatch()
   const user = useAppSelector(selectUser)
 
@@ -56,6 +58,7 @@ const ProfileForm = () => {
     lastName,
   }) => {
     try {
+      setIsLoading(true)
       const { data, error } = await AuthService.updateUserData(
         email,
         firstName,
@@ -68,6 +71,8 @@ const ProfileForm = () => {
       )
     } catch (error: any) {
       dispatch(setAlert({ type: 'error', text: error.message }))
+    } finally {
+      setIsLoading(false)
     }
   }
 
@@ -104,7 +109,8 @@ const ProfileForm = () => {
             text="Apply"
             type="submit"
             variant="contained"
-            disabled={!isValid}
+            disabled={!isValid || isLoading}
+            loading={isLoading}
           />
         </div>
         <div className={styles.button}>

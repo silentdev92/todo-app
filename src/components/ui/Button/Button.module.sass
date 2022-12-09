@@ -4,13 +4,42 @@
     width: 120px
     height: 39px
     border-radius: 8px
-    font-family: 'Rosario'
-    font-weight: 700
-    font-size: 18px
-    text-align: center
     cursor: pointer
+    position: relative
     &:disabled
         cursor: default
+    span
+        font-family: 'Rosario'
+        font-weight: 700
+        font-size: 18px
+    &.loading
+        &::after
+            content: ""
+            position: absolute
+            width: 14px
+            height: 14px
+            top: 0
+            left: 0
+            right: 0
+            bottom: 0
+            margin: auto
+            border: 5px solid transparent
+            border-radius: 50%
+            animation: button-loading-spinner 1s ease infinite
+        @keyframes button-loading-spinner
+            from
+                transform: rotate(0turn)
+            to
+                transform: rotate(1turn)
+        span
+            visibility: hidden
+            opacity: 0
+        &.contained
+            &::after
+                border-top-color: #fff
+        &.outlined
+            &::after
+                border-top-color: var.$red-color
     &.contained
         color: #fff
         background-color: var.$red-color

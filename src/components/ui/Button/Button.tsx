@@ -10,6 +10,7 @@ interface ButtonProps {
   disabled?: boolean
   onClick?: () => void
   text: string
+  loading?: boolean
 }
 
 const Button: FC<ButtonProps> = ({
@@ -18,10 +19,12 @@ const Button: FC<ButtonProps> = ({
   disabled = false,
   onClick,
   text,
+  loading,
 }) => {
   const className = cx('root', {
     contained: variant === 'contained',
     outlined: variant === 'outlined',
+    loading,
   })
 
   return (
@@ -31,7 +34,7 @@ const Button: FC<ButtonProps> = ({
       disabled={disabled}
       onClick={onClick}
     >
-      {text}
+      <span>{text}</span>
     </button>
   )
 }

@@ -1,4 +1,4 @@
-import React, { FC, useEffect } from 'react'
+import React, { FC, useEffect, useState } from 'react'
 import { yupResolver } from '@hookform/resolvers/yup'
 import { SubmitHandler, useForm } from 'react-hook-form'
 import * as yup from 'yup'
@@ -28,6 +28,8 @@ const schema = yup.object().shape({
 })
 
 const TodoForm: FC<TodoFormProps> = ({ mode = 'Add', todo, onClose }) => {
+  const [isLoading, setIsLoading] = useState<boolean>(false)
+
   const user = useAppSelector(selectUser)
   const dispatch = useAppDispatch()
 
@@ -43,6 +45,7 @@ const TodoForm: FC<TodoFormProps> = ({ mode = 'Add', todo, onClose }) => {
 
   const onSubmit: SubmitHandler<FormInput> = async ({ title, description }) => {
     try {
+      setIsLoading(true)
       if (mode === 'Add') {
         const { data, error } = await TodoService.create(
           title,
@@ -63,6 +66,7 @@ const TodoForm: FC<TodoFormProps> = ({ mode = 'Add', todo, onClose }) => {
     } catch (error: any) {
       console.log(error.message)
     } finally {
+      setIsLoading(false)
       onClose()
     }
   }
@@ -80,7 +84,7 @@ const TodoForm: FC<TodoFormProps> = ({ mode = 'Add', todo, onClose }) => {
         <input
           type="text"
           className={styles.title}
-          placeholder="Task title"
+          placeholder="Title"
           {...register('title')}
         />
         <textarea
@@ -95,7 +99,8 @@ const TodoForm: FC<TodoFormProps> = ({ mode = 'Add', todo, onClose }) => {
             type="submit"
             text={mode}
             variant="contained"
-            disabled={!isValid}
+            disabled={!isValid || isLoading}
+            loading={isLoading}
           />
         </div>
         <div className={styles.button}>
