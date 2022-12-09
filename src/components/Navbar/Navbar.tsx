@@ -1,4 +1,4 @@
-import React, { FC, useEffect, useState } from 'react'
+import React, { FC } from 'react'
 import {
   faTableList,
   faUser,
@@ -10,13 +10,14 @@ import classNames from 'classnames/bind'
 import styles from './Navbar.module.sass'
 import AuthService from '../../api/AuthService'
 import { useAppDispatch } from '../../hooks/useAppDispatch'
-import { Link, useNavigate } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
 import { signOut } from '../../store/auth/slice'
 import { CSSTransition } from 'react-transition-group'
 import { useAppSelector } from '../../hooks/useAppSelector'
 import { selectFullUserName } from '../../store/auth/selectors'
 import { useDropdownVisible } from '../../hooks/useDropdownVisible'
 import { setAlert } from '../../store/alert/async'
+import { clearTodoList } from '../../store/todo/slice'
 
 const cx = classNames.bind(styles)
 
@@ -33,6 +34,7 @@ const Navbar: FC = () => {
       const { error } = await AuthService.signOut()
       if (error) throw error
       dispatch(signOut())
+      dispatch(clearTodoList())
       setDropdownIsOpen(false)
       dispatch(
         setAlert({ type: 'info', text: 'You have successfully signed out' })
