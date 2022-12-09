@@ -12,6 +12,7 @@ import { Input } from '../../../components/ui/Input'
 import AuthService from '../../../api/AuthService'
 import { useAppDispatch } from '../../../hooks/useAppDispatch'
 import { signIn } from '../../../store/auth/slice'
+import { setAlert } from '../../../store/alert/async'
 
 const cx = classNames.bind(styles)
 
@@ -56,6 +57,9 @@ const SignIn: FC = () => {
       const { data, error } = await AuthService.signIn(email, password)
       if (error) throw error
       dispatch(signIn(data.user))
+      dispatch(
+        setAlert({ type: 'info', text: 'You have successfully signed in' })
+      )
       navigate('/home')
     } catch (error: any) {
       setSignInError(error.message)

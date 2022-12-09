@@ -16,6 +16,7 @@ import { CSSTransition } from 'react-transition-group'
 import { useAppSelector } from '../../hooks/useAppSelector'
 import { selectFullUserName } from '../../store/auth/selectors'
 import { useDropdownVisible } from '../../hooks/useDropdownVisible'
+import { setAlert } from '../../store/alert/async'
 
 const cx = classNames.bind(styles)
 
@@ -33,8 +34,13 @@ const Navbar: FC = () => {
       if (error) throw error
       dispatch(signOut())
       setDropdownIsOpen(false)
+      dispatch(
+        setAlert({ type: 'info', text: 'You have successfully signed out' })
+      )
       navigate('/signin')
-    } catch (error: any) {}
+    } catch (error: any) {
+      dispatch(setAlert({ type: 'error', text: error.message }))
+    }
   }
 
   const navigateToHome = () => {

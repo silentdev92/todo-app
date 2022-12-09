@@ -15,6 +15,7 @@ import { deleteTodo, updateTodo } from '../../store/todo/slice'
 import { TodoForm } from '../TodoForm'
 import { delay } from '../../helpers/delay'
 import { useDropdownVisible } from '../../hooks/useDropdownVisible'
+import { setAlert } from '../../store/alert/async'
 
 const cx = classNames.bind(styles)
 
@@ -55,8 +56,9 @@ const TodoItem: FC<TodoItemProps> = ({ item }) => {
       })
       if (error) throw error
       dispatch(updateTodo({ id: item.id, data: data[0] }))
-    } catch (error) {
-      console.log(error)
+      dispatch(setAlert({ type: 'success', text: 'Todo successfully updated' }))
+    } catch (error: any) {
+      dispatch(setAlert({ type: 'error', text: error.message }))
     }
   }
 
@@ -65,8 +67,9 @@ const TodoItem: FC<TodoItemProps> = ({ item }) => {
       const { error } = await TodoService.delete(item.id)
       if (error) throw error
       dispatch(deleteTodo(item.id))
-    } catch (error) {
-      console.log(error)
+      dispatch(setAlert({ type: 'success', text: 'Todo successfully deleted' }))
+    } catch (error: any) {
+      dispatch(setAlert({ type: 'error', text: error.message }))
     }
   }
 

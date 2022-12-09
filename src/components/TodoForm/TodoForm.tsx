@@ -10,6 +10,7 @@ import { useAppSelector } from '../../hooks/useAppSelector'
 import { useAppDispatch } from '../../hooks/useAppDispatch'
 import { selectUser } from '../../store/auth/selectors'
 import { addTodo, updateTodo } from '../../store/todo/slice'
+import { setAlert } from '../../store/alert/async'
 
 interface TodoFormProps {
   mode?: 'Add' | 'Edit'
@@ -54,6 +55,9 @@ const TodoForm: FC<TodoFormProps> = ({ mode = 'Add', todo, onClose }) => {
         )
         if (error) throw error
         dispatch(addTodo(data[0]))
+        dispatch(
+          setAlert({ type: 'success', text: 'Todo successfully created' })
+        )
       }
       if (mode === 'Edit') {
         const { data, error } = await TodoService.update(todo!.id, {
@@ -62,9 +66,12 @@ const TodoForm: FC<TodoFormProps> = ({ mode = 'Add', todo, onClose }) => {
         })
         if (error) throw error
         dispatch(updateTodo({ id: todo!.id, data: data[0] }))
+        dispatch(
+          setAlert({ type: 'success', text: 'Todo successfully updated' })
+        )
       }
     } catch (error: any) {
-      console.log(error.message)
+      dispatch(setAlert({ type: 'error', text: error.message }))
     } finally {
       setIsLoading(false)
       onClose()

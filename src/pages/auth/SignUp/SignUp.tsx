@@ -12,6 +12,7 @@ import { Input } from '../../../components/ui/Input'
 import AuthService from '../../../api/AuthService'
 import { useAppDispatch } from '../../../hooks/useAppDispatch'
 import { signIn } from '../../../store/auth/slice'
+import { setAlert } from '../../../store/alert/async'
 
 const cx = classNames.bind(styles)
 
@@ -82,6 +83,9 @@ const SignUp: FC = () => {
       )
       if (error) throw error
       dispatch(signIn(data.user))
+      dispatch(
+        setAlert({ type: 'info', text: 'You have successfully signed in' })
+      )
       navigate('/home')
     } catch (error: any) {
       setSignUpError(error.message)
